@@ -20,6 +20,14 @@ io.on( 'connection', (socket) => {
         io.emit('cursor-recibido', elemento);
     })
 
+    socket.on ('cambiar-tamaño', (elemento)=>{
+        io.emit('tamaño-recibido', elemento);
+    })
+
+    socket.on ('cambiar-color', (elemento)=>{
+        io.emit('color-recibido', elemento);
+    })
+
     io.on( 'disconnect', () => {
         console.log('Un cliente se ha desconectado');
     })

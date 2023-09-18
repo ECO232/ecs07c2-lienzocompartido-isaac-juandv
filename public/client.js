@@ -11,11 +11,12 @@ let cursores = [];
 
 function setup(){
     createCanvas(400, 400);
-    r = int(Math.random ()*255)
-    g = int(Math.random ()*255)
-    b = int(Math.random()*255)
-    identificador = int(random()*1000)
+    r = int(Math.random ()*255);
+    g = int(Math.random ()*255);
+    b = int(Math.random()*255);
+    identificador = int(random()*1000);
     console.log("identificador: ", identificador)
+    changeColor()
 }
 
 function draw() {
@@ -32,6 +33,58 @@ function draw() {
     });
 }
 
+
+
+// ///////
+// function width() {
+//     sizeSlider = document.getElementById('size');
+//     sizeSlider.addEventListener('input', updateSize);
+//     size = parseInt(sizeSlider.value);
+//     socket.emit ('cambiar-tamaño', elemento);
+//   }
+
+
+
+function changeColor() {
+    const colorPicker = document.getElementById("colorPicker");
+    const colorValue = document.getElementById('colorValue');
+
+    
+    colorPicker.addEventListener("change", (event) => {
+        colorValue.textContent = event.target.value;
+        const color = event.target.value;
+        const colorRGB = hexToRgb(color);
+        
+        r=colorRGB.r
+        g=colorRGB.g
+        b=colorRGB.b
+
+        const elemento = {
+            x: mouseX,
+            y: mouseY,
+            r: r,
+            g: g,
+            b: b,
+            size
+            };
+        
+        socket.emit("cambiar-color", elemento);
+    });
+        
+}
+
+
+function hexToRgb(hex) {
+
+    hex = hex.replace(/^#/, '');
+
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    return { r, g, b };
+}
 
 function mousePressed(){
     const elemento = {
@@ -84,4 +137,10 @@ socket.on('cursor-recibido', (elemento) => {
     else {
     cursores.push(elemento)
     }
+});
+
+socket.on('color-recibido', (elemento) => {
+
+    console. log ("recibiendo-color:", elemento)
+    elementos.push (elemento)
 });
