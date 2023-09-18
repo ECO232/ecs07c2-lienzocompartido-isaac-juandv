@@ -17,6 +17,7 @@ function setup(){
     identificador = int(random()*1000);
     console.log("identificador: ", identificador)
     changeColor()
+    siz()
 }
 
 function draw() {
@@ -35,14 +36,25 @@ function draw() {
 
 
 
-// ///////
-// function width() {
-//     sizeSlider = document.getElementById('size');
-//     sizeSlider.addEventListener('input', updateSize);
-//     size = parseInt(sizeSlider.value);
-//     socket.emit ('cambiar-tamaño', elemento);
-//   }
 
+function siz() {
+    const sizeSlider = document.getElementById('size');
+    sizeSlider.addEventListener('change', (event) => {
+
+    size = parseInt(event.target.value);
+
+    const elemento = {
+        x: mouseX,
+        y: mouseY,
+        r: r,
+        g: g,
+        b: b,
+        size
+        };
+
+    socket.emit ('cambiar-tamaño', elemento);
+    });
+}
 
 
 function changeColor() {
@@ -144,3 +156,10 @@ socket.on('color-recibido', (elemento) => {
     console. log ("recibiendo-color:", elemento)
     elementos.push (elemento)
 });
+
+socket.on('tamaño-recibido', (elemento) => {
+
+    console. log ("recibiendo-tamaño:", elemento)
+    elementos.push (elemento)
+});
+
